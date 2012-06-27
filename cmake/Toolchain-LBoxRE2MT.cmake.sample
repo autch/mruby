@@ -1,0 +1,29 @@
+# Sample toolchain file for building for NTT COMWARE L-Box RE2-MT
+#
+# Typical usage:
+#    1) install standard cross compiler toolkit provided from vendor
+#    2) cp cmake/Toolchain-LBoxRE2MT.cmake.sample ~/Toolchain-LBoxRE2MT.cmake
+#    3) tweak toolchain values as needed
+#    4) cd build
+#    5) cmake -DCMAKE_TOOLCHAIN_FILE=~/Toolchain-LBoxRE2MT.cmake ..
+
+# name of the target OS on which the built artifacts will run and the
+# toolchain prefix. if target is an embedded system without an OS, set
+# CMAKE_SYSTEM_NAME to `Generic`
+set(CMAKE_SYSTEM_NAME Linux)
+set(TOOLCHAIN_PREFIX sh4-linux)
+
+# cross compilers to use for C
+set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}-gcc)
+
+# target environment on the build host system
+#   set 1st to dir with the cross compiler's C/C++ headers/libs
+#   set 2nd to dir containing personal cross development headers/libs
+set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX} ~/crossdev/lbox)
+
+# modify default behavior of FIND_XXX() commands to
+# search for headers/libs in the target environment and
+# search for programs in the build host environment
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
